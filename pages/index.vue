@@ -1,115 +1,84 @@
 <template>
-  <div id="canvas">
-    <div id="deep-space" />
-    <div id="space-field">
-      <SpaceObject id="spaceship" class="spaceship" :data="spaceField.ship" resolution="2" />
-
-      <SpaceObject class="asteroid" :data="asteroid" resolution="2"
-                  :key="asteroid.center"
-                  v-for="asteroid in spaceField.asteroids" />
-
-      <SpaceObject class="missile" :data="missile" resolution="2"
-                  :key="missile.center"
-                  v-for="missile in spaceField.missiles" />
-
-      <SpaceObject class="explosion" :data="explosion" resolution="2"
-                  :key="explosion.center"
-                  v-for="explosion in spaceField.explosions" />
+    <div class="background-index">
+        <div class="title">
+            <h1>Galary Raiders</h1>
+        </div>
+        <button class="button button1"><NuxtLink to="jogo">Iniciar Partida</NuxtLink></button>
+        <button class="button button2"><NuxtLink to ="leaderboard">Leaderboard</NuxtLink></button>
+        <button class="button button3"><NuxtLink to ="saida">Sair</NuxtLink></button>
     </div>
-  </div>
 </template>
-
-<script setup>
-const {
-  data: spaceField,
-  refresh: updateSpaceField
-} = await $get("/space-field");
-
-onMounted(() => {
-  window.addEventListener("keydown", async (event) => {
-    const keyToCommand = {
-      "ArrowUp": "MOVE_SHIP_UP",
-      "ArrowDown": "MOVE_SHIP_DOWN",
-      "ArrowRight": "MOVE_SHIP_RIGHT",
-      "ArrowLeft": "MOVE_SHIP_LEFT",
-      "Space": "LAUNCH_MISSILE",
-      "Escape": "PAUSE_GAME",
-    };
-
-    const command = keyToCommand[event.code];
-
-    // Ignore if invalid key was pressed
-    if (command === undefined) return;
-
-    console.log(`Triggering command: ${command}`);
-    await $post("/ship/commands", { command })
-  });
-
-  window.setInterval(updateSpaceField, 1000);
-})
+  
+<script>
 </script>
 
-<style>
-#canvas {
-  height: calc(100vh - 4rem);
-  width: calc(100vw - 4rem);
+<style scoped>
+    .title {
+        text-align: center;
+        font-size: 20px;
+        color: white;
+        margin: 20px auto;
+    }
 
-  padding: 2rem;
+    .button {
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 550px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        text-color: black;
+    }
 
-  background-color: #36bbf5;
-  overflow: hidden;
+    .button1 {
+        background-color: white; 
+        color: black; 
+        border: 2px solid #429853;
+    }
 
-  position: relative;
+    .button1:hover {
+        background-color: #429853;
+        color: white;
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .button2 {
+        background-color: white; 
+        color: black; 
+        border: 2px solid #0A579A;
+    }
 
-@keyframes slide {
-  0% {
-    transform: translate(1px);
-  }
-  50% {
-    transform: translate(-1px);
-  }
-  100% {
-    transform: translate(1px);
-  }
-}
+    .button2:hover {
+        background-color: #0A579A;
+        color: white;
+    }
 
-#deep-space {
-  height: calc(100% - 4rem);
-  width: calc(100% - 4rem);
+    .button3 {
+        background-color: white; 
+        color: black; 
+        border: 2px solid #CB142D;
+    }
 
-  background-image: url("~/assets/space.png");
-  background-origin: content-box;
-  animation: slide 3s linear infinite;
+    .button3:hover {
+        background-color: #CB142D;
+        color: white;
+    }
 
-  position: absolute;
-  z-index: 0;
-}
+    *{
+        margin: 0;
+        padding: 0;
+    }
 
-#space-field {
-  height: calc(100% - 4rem);
-  width: calc(100% - 4rem);
+    .background-index{
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center-up;
+        text-align: center-up;
+        background-image: url("../assets/menu2.jpg");
+    }
 
-  position: relative;
-}
-
-.spaceship {
-  background-image: url("~/assets/spaceship.png");
-}
-
-.asteroid {
-  background-image: url("~/assets/asteroid.png");
-}
-
-.missile {
-  background-image: url("~/assets/missile.png");
-}
-
-.explosion {
-  background-image: url("~/assets/explosion.png");
-}
 </style>
